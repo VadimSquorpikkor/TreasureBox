@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "44504165410",
+    "project_id": "sqrtreasurebox",
+    "storage_bucket": "sqrtreasurebox.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44504165410:android:51a3a1b84377afe654ae7b",
+        "android_client_info": {
+          "package_name": "com.squorpikkor.app.treasurebox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44504165410-kp4pbdho3i3n8cc4095o9gdjc3ve5ckk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.squorpikkor.app.treasurebox",
+            "certificate_hash": "a2e36856ded4d7640ad87072c0785bc5fc5602bc"
+          }
+        },
+        {
+          "client_id": "44504165410-shj94b0vu6t75nrd8nios70957jatouf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9YPuz8sWNwLfdA02feUrjF1G1dh1IEHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44504165410-shj94b0vu6t75nrd8nios70957jatouf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="MyButtonColor" type="color"/>
+    <attr name="MyButtonBorder" type="color"/>
+    <attr name="MyButtonPressed" type="color"/>
+    <attr name="MyButtonBorderPressed" type="color"/>
+    <attr name="MyButtonText" type="color"/>
+</resources>

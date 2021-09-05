@@ -13,8 +13,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
-
+        versionName "1.01"
+        setProperty("archivesBaseName", "TreasureBox-v" + versionName)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,4 +41,6 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:28.4.0')
     implementation 'com.google.firebase:firebase-analytics'//нужно ли?
+
+    implementation 'com.google.firebase:firebase-firestore:23.0.3'
 }

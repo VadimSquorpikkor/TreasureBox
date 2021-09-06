@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <solid android:color="?attr/MyButtonColor"/>
-    <corners android:radius="40dp" />
-    <stroke android:width="4dp" android:color="?attr/MyButtonBorder"/>
+    <corners android:radius="35dp" />
+    <stroke android:width="2dp" android:color="?attr/MyButtonBorder"/>
 
 </shape>

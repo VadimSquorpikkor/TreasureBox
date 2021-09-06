@@ -1,5 +1,7 @@
 package com.squorpikkor.app.treasurebox;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -29,17 +31,25 @@ public class MainViewModel  extends ViewModel {
      * */
 
     public static final String TAG = "TAG";
+    private static final String RIGHT_PASS = "2985984";
+    public static final int PRESS_CLEAR_BUTTON = 100;
+    public static final int PRESS_OK_BUTTON = 101;
 
     private FireDBHelper db;
     private MutableLiveData<ArrayList<Entity>> entitiesList;
+    private MutableLiveData<String> passLine;
 
     private String login;
     private String password;
-
+    private String pass;
 
     public MainViewModel() {
         db = new FireDBHelper();
         entitiesList = new MutableLiveData<>();
+        passLine = new MutableLiveData<>();
+        pass = "";
+        passLine.setValue("");
+
 
         proverochka();
     }
@@ -49,13 +59,34 @@ public class MainViewModel  extends ViewModel {
         password = "2985984";
     }
 
+    public void clickButton(int i) {
+        if (i == PRESS_CLEAR_BUTTON) {
+            pass = "";
+            passLine.setValue("");
+        } else if (i == PRESS_OK_BUTTON) {
+            openBox();
+        } else {
+            pass+=i;
+            passLine.setValue(passLine.getValue()+"*");
+        }
+    }
+
+    private void openBox() {
+        if (pass.equals(RIGHT_PASS)) getEntitiesFromDB();
+        else Log.e(TAG, "wrong: "+pass);
+    }
+
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
         return entitiesList;
+    }
+    public MutableLiveData<String> getPassLine() {
+        return passLine;
     }
 
     void getEntitiesFromDB() {
         db.getEntitiesByParam(entitiesList, login, password);
     }
+
 
 
 }

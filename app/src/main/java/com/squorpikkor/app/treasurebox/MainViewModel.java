@@ -15,14 +15,9 @@ public class MainViewModel  extends ViewModel {
      * 2. Каждому логину соответствует отдельная коллекция
      * После ввода логина и пароля приложение подключается к БД и ищет в ней коллекцию с именем
      * логина. Если такой коллекции в БД нет, выводится сообщение "Нет такого пользователя!"
-     * 3. Если коллекция существует, то в ней ищется документ _password_to_collection (название ещё
-     * подумаю). В этом документе хранится пароль к коллекции. Пароль хранится не как значение ключа,
-     * а как имя field, т.е. в документе ищется field (value не используется) и если не находится,
-     * то выводится "Неправильный пароль!". Если хранить как значение (value), то получается при
-     * проверке пароля будет из БД браться правильный пароль и сравниваться с введенным пользователем,
-     * т.е. некто будет всегда получать правильный пароль, даже не зная его. Как-то не камильфо. Если
-     * же хранить пароль как имя поля (field), то на запрос о проверке пароля может быть только 2
-     * варианта: найден (правильный) и не найден (неправильный)
+     * 3. Если коллекция существует, то в ней ищется документ _password_key_ .
+     * В этом документе хранится пароль к коллекции. Если введенный пароль совпал с паролем в
+     * коллекции, получаем данные из БД
      * 4. В коллекции каждый документ -- это отдельная сущность (имя+логин+пароль(возможно + ещё что-то))
      * 5. В документе поля могут иметь название: "title", "email", "login", "password" и любые другие,
      * количество может быть любым, название задается firebase автоматом, количество полей и их
@@ -31,7 +26,6 @@ public class MainViewModel  extends ViewModel {
      * */
 
     public static final String TAG = "TAG";
-    private static final String RIGHT_PASS = "2985984";
     public static final int PRESS_CLEAR_BUTTON = 100;
     public static final int PRESS_OK_BUTTON = 101;
 
@@ -40,23 +34,20 @@ public class MainViewModel  extends ViewModel {
     private MutableLiveData<String> passLine;
 
     private String login;
-    private String password;
-    private String pass;
+    private String pass;//todo объединить pass и passLine ()
 
     public MainViewModel() {
-        db = new FireDBHelper();
         entitiesList = new MutableLiveData<>();
+        db = new FireDBHelper(entitiesList);
         passLine = new MutableLiveData<>();
         pass = "";
         passLine.setValue("");
-
 
         proverochka();
     }
 
     private void proverochka() {
         login = "squorpikkor";
-        password = "2985984";
     }
 
     public void clickButton(int i) {
@@ -65,15 +56,17 @@ public class MainViewModel  extends ViewModel {
             passLine.setValue("");
         } else if (i == PRESS_OK_BUTTON) {
             openBox();
+            pass = "";
+            passLine.setValue("");
         } else {
             pass+=i;
             passLine.setValue(passLine.getValue()+"*");
         }
+            Log.e(TAG, "pass: "+pass);
     }
 
     private void openBox() {
-        if (pass.equals(RIGHT_PASS)) getEntitiesFromDB();
-        else Log.e(TAG, "wrong: "+pass);
+        db.getEntitiesByParam(login, pass);
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
@@ -82,11 +75,5 @@ public class MainViewModel  extends ViewModel {
     public MutableLiveData<String> getPassLine() {
         return passLine;
     }
-
-    void getEntitiesFromDB() {
-        db.getEntitiesByParam(entitiesList, login, password);
-    }
-
-
 
 }

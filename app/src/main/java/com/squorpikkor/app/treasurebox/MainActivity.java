@@ -5,9 +5,12 @@ import static com.squorpikkor.app.treasurebox.MainViewModel.PRESS_OK_BUTTON;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel mViewModel;
     private static final String TAG = "TAG";
+
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +47,25 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button_cl).setOnClickListener(v -> mViewModel.clickButton(PRESS_CLEAR_BUTTON));
         findViewById(R.id.button_ok).setOnClickListener(v -> mViewModel.clickButton(PRESS_OK_BUTTON));
+
+        recyclerView = findViewById(R.id.recycler);
+
     }
 
     private void updateTreasureList(ArrayList<Entity> entities) {
-        if (entities==null||entities.size()==0)return;
-        Log.e(TAG, "updateTreasureList: "+entities.get(0).getName());
-        Toast.makeText(this, entities.get(0).getName(), Toast.LENGTH_SHORT).show();
+//        if (entities==null||entities.size()==0)return;
+//        Log.e(TAG, "updateTreasureList: "+entities.get(0).getName());
+//        Toast.makeText(this, entities.get(0).getName(), Toast.LENGTH_SHORT).show();
+
+        if (entities==null || entities.size()==0) return;
+        findViewById(R.id.button_layout).setVisibility(View.GONE);
+        findViewById(R.id.password_line).setVisibility(View.GONE);
+        findViewById(R.id.recycler).setVisibility(View.VISIBLE);
+        EntitiesAdapter adapter = new EntitiesAdapter(entities);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
     }
 
 }

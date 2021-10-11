@@ -11,6 +11,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.squorpikkor.app.treasurebox.MainViewModel.TAG;
@@ -19,7 +21,10 @@ class FireDBHelper {
 
     public static final String ENTITY_NAME = "name";
     public static final String ENTITY_PASS = "pass";
+    /**Логин в сохраненных данных, не путать с логином пользователя приложения*/
     public static final String ENTITY_LOGIN = "login";
+    public static final String PASS_DOCUMENT = "_password_key_";
+
 
     private final FirebaseFirestore db;
 
@@ -30,7 +35,31 @@ class FireDBHelper {
         this.entitiesList = entitiesList;
     }
 
+    /**Имя таблицы — это логин пользователя*/
+    void addUnitToDB(String tableName, Entity entity) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(ENTITY_NAME, entity.getName());
+        data.put(ENTITY_LOGIN, entity.getLogin());
+        data.put(ENTITY_PASS, entity.getPass());
+        db.collection(tableName)
+                .document()
+                .set(data)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
+                .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
+    }
+
+    public void addPassword(String tableName, String newPass) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(ENTITY_PASS, newPass);
+        db.collection(tableName)
+                .document(PASS_DOCUMENT)
+                .set(data)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
+                .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
+    }
+
     void getEntitiesByParam(String login, String password) {
+        Log.e(TAG, "getEntitiesByParam: password "+password);
 
         Query query = db.collection(login);//Логин -- это название коллекции. Другими словами у
         // каждого пользователя пароли храняться в отдельной коллекции, название которой -- это имя пользоватеоля
@@ -58,6 +87,7 @@ class FireDBHelper {
                                         return;
                                     }
                                     //Если пароль правильный, грузим данные
+
                                     ArrayList<Entity> list = new ArrayList<>();
                                     for (DocumentSnapshot document2 : task.getResult()) {
                                         Entity entity = getEntityFromSnapshot(document2);

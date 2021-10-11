@@ -1,7 +1,5 @@
 package com.squorpikkor.app.treasurebox;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -29,9 +27,9 @@ public class MainViewModel  extends ViewModel {
     public static final int PRESS_CLEAR_BUTTON = 100;
     public static final int PRESS_OK_BUTTON = 101;
 
-    private FireDBHelper db;
-    private MutableLiveData<ArrayList<Entity>> entitiesList;
-    private MutableLiveData<String> passLine;
+    private final FireDBHelper db;
+    private final MutableLiveData<ArrayList<Entity>> entitiesList;
+    private final MutableLiveData<String> passLine;
 
     private String login;
     private String pass;//todo объединить pass и passLine ()
@@ -46,6 +44,10 @@ public class MainViewModel  extends ViewModel {
         proverochka();
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     private void proverochka() {
         login = "squorpikkor";
     }
@@ -54,19 +56,30 @@ public class MainViewModel  extends ViewModel {
         if (i == PRESS_CLEAR_BUTTON) {
             pass = "";
             passLine.setValue("");
-        } else if (i == PRESS_OK_BUTTON) {
-            openBox();
-            pass = "";
-            passLine.setValue("");
         } else {
             pass+=i;
             passLine.setValue(passLine.getValue()+"*");
         }
-            Log.e(TAG, "pass: "+pass);
     }
 
-    private void openBox() {
-        db.getEntitiesByParam(login, pass);
+    public void openBox() {
+        db.getEntitiesByParam(login, Encrypter.decodeMe(pass));
+        pass = "";
+        passLine.setValue("");
+    }
+
+    /**Все поля объекта Entity сразу шифруются, затем этот шифрованный Entity передается в FireDBHelper*/
+    void addEntityToDB(String login, Entity entity) {
+        Entity codedEntity = new Entity(
+                Encrypter.decodeMe(entity.getName()),
+                Encrypter.decodeMe(entity.getLogin()),
+                Encrypter.decodeMe(entity.getPass())
+        );
+        db.addUnitToDB(login, codedEntity);
+    }
+
+    public void addPassword() {
+        db.addPassword(login, Encrypter.decodeMe("2985984"));
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
@@ -75,5 +88,8 @@ public class MainViewModel  extends ViewModel {
     public MutableLiveData<String> getPassLine() {
         return passLine;
     }
+
+
+
 
 }

@@ -15,6 +15,8 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
 
     ArrayList<Entity> deviceList;
 
+    //TODO переделать адаптер
+
     public EntitiesAdapter(ArrayList<Entity> deviceList) {
         this.deviceList = deviceList;
     }
@@ -29,9 +31,14 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
     @Override
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         Entity entity = deviceList.get(position);
-        holder.name.setText(entity.getName());
-        holder.login.setText(entity.getLogin());
-        holder.pass.setText(entity.getPass());
+        if (entity.getName().equals("null")) holder.name.setText("");
+        else holder.name.setText(Encrypter.decodeMe(entity.getName()));
+
+        if (entity.getLogin().equals("null")) holder.login.setText("");
+        else holder.login.setText(Encrypter.decodeMe(entity.getLogin()));
+
+        if (entity.getPass().equals("null")) holder.pass.setText("");
+        else holder.pass.setText(Encrypter.decodeMe(entity.getPass()));
     }
 
     @Override

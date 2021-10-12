@@ -1,5 +1,6 @@
-package com.squorpikkor.app.treasurebox;
+package com.squorpikkor.app.treasurebox.crypto;
 
+/**Шифрование на основе XOR*/
 public class Encrypter {
 
     private final static int[] mKey = new int[]{
@@ -37,7 +38,7 @@ public class Encrypter {
         return s.toString();
     }
 
-    public static String decodeMe(String code) {
+    public static String decodeMe_(String code) {
         return stringFromArr(Encrypter.convertData(arrFromString(code)));
     }
 }

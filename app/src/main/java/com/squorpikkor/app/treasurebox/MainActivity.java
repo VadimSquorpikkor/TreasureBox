@@ -3,20 +3,15 @@ package com.squorpikkor.app.treasurebox;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "TAG";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        MainViewModel mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.fragment_container);
@@ -24,7 +19,5 @@ public class MainActivity extends AppCompatActivity {
             fragment = PassFragment.newInstance();
             manager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-
     }
-
 }

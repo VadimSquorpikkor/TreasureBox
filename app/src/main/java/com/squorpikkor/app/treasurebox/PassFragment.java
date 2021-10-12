@@ -1,21 +1,12 @@
 package com.squorpikkor.app.treasurebox;
 
-import static com.squorpikkor.app.treasurebox.MainViewModel.PRESS_CLEAR_BUTTON;
-import static com.squorpikkor.app.treasurebox.MainViewModel.PRESS_OK_BUTTON;
-
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class PassFragment extends Fragment {
 
@@ -23,16 +14,12 @@ public class PassFragment extends Fragment {
         return new PassFragment();
     }
 
-
-    View view;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_pass, container, false);
+        View view = inflater.inflate(R.layout.fragment_pass, container, false);
         MainViewModel mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         TextView passLine = view.findViewById(R.id.password_line);
-
 
         mViewModel.getPassLine().observe(requireActivity(), passLine::setText);
 
@@ -47,10 +34,10 @@ public class PassFragment extends Fragment {
         view.findViewById(R.id.button9).setOnClickListener(v -> mViewModel.clickButton(9));
         view.findViewById(R.id.button0).setOnClickListener(v -> mViewModel.clickButton(0));
 
-        view.findViewById(R.id.button_cl).setOnClickListener(v -> mViewModel.clickButton(PRESS_CLEAR_BUTTON));
-        view.findViewById(R.id.button_ok).setOnClickListener(v -> openListFragment());
+        view.findViewById(R.id.button_cl).setOnClickListener(v -> mViewModel.clearStroke());
+        view.findViewById(R.id.button_ok).setOnClickListener(v -> openListFragment());//todo перед открытием проверять пароль (сейчас: если пароль неправильный, то список не загружается)
 
-//        mViewModel.addPassword();
+        mViewModel.closeBox();
 
         return view;
     }
@@ -61,9 +48,4 @@ public class PassFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
-
-
-
-
-
 }

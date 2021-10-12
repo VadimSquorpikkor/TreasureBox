@@ -1,13 +1,11 @@
 package com.squorpikkor.app.treasurebox;
 
 import android.util.Log;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
@@ -15,16 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_LOGIN;
+import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_NAME;
+import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_PASS;
+import static com.squorpikkor.app.treasurebox.MainViewModel.PASS_DOCUMENT;
 import static com.squorpikkor.app.treasurebox.MainViewModel.TAG;
 
 class FireDBHelper {
-
-    public static final String ENTITY_NAME = "name";
-    public static final String ENTITY_PASS = "pass";
-    /**Логин в сохраненных данных, не путать с логином пользователя приложения*/
-    public static final String ENTITY_LOGIN = "login";
-    public static final String PASS_DOCUMENT = "_password_key_";
-
 
     private final FirebaseFirestore db;
 
@@ -58,7 +53,7 @@ class FireDBHelper {
                 .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
     }
 
-    void getEntitiesByParam(String login, String password) {
+    void getEntities(String login, String password) {
         Log.e(TAG, "getEntitiesByParam: password "+password);
 
         Query query = db.collection(login);//Логин -- это название коллекции. Другими словами у
@@ -74,7 +69,7 @@ class FireDBHelper {
                             return;
                         }
                         //Если пользователь есть — проверяем пароль
-                        DocumentReference docRef = db.collection(login).document("_password_key_");
+                        DocumentReference docRef = db.collection(login).document(PASS_DOCUMENT);
                         docRef.get().addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
                                 DocumentSnapshot document = task2.getResult();
@@ -82,7 +77,7 @@ class FireDBHelper {
                                 if (querySnapshot.isEmpty()) return;
                                 if (document.exists()) {
                                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                    if (!Objects.equals(document.get("pass"), password)) {
+                                    if (!Objects.equals(document.get(ENTITY_PASS), password)) {
                                         Log.e(TAG, "НЕ ПРАВИЛЬНЫЙ ПАРОЛЬ!");
                                         return;
                                     }
@@ -94,6 +89,7 @@ class FireDBHelper {
                                         list.add(entity);
                                     }
                                     entitiesList.setValue(list);
+//                                    entitiesList.setValue(entitiesList.getValue());
                                 }
                             }
                         });
@@ -106,6 +102,11 @@ class FireDBHelper {
         String pass = String.valueOf(document.get(ENTITY_PASS));
         String login = String.valueOf(document.get(ENTITY_LOGIN));
         return new Entity(name, login, pass);
+    }
+
+    /**Слушатель для новых событий*/
+    void addNewEventListener(String login, String password) {
+        db.collection(login).addSnapshotListener((queryDocumentSnapshots, error) -> getEntities(login, password));
     }
 
 }

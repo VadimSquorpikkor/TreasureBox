@@ -1,6 +1,8 @@
 package com.squorpikkor.app.treasurebox;
 
 import android.util.Log;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,13 +15,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_LOGIN;
-import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_NAME;
-import static com.squorpikkor.app.treasurebox.MainViewModel.ENTITY_PASS;
-import static com.squorpikkor.app.treasurebox.MainViewModel.PASS_DOCUMENT;
 import static com.squorpikkor.app.treasurebox.MainViewModel.TAG;
 
 class FireDBHelper {
+
+    /**Название поля для имени в БД*/
+    public static final String ENTITY_NAME = "1";
+    /**Название поля для пароля в БД*/
+    public static final String ENTITY_PASS = "2";
+    /**Название поля для логина в БД, не путать с логином пользователя приложения*/
+    public static final String ENTITY_LOGIN = "3";
+
+    public static final String ENTITY_EMAIL = "4";
+
+    public static final String ENTITY_ADDS = "5";
+    /**Название документа с паролем в БД*/
+    public static final String PASS_DOCUMENT = "0";
 
     private final FirebaseFirestore db;
 
@@ -36,6 +47,8 @@ class FireDBHelper {
         data.put(ENTITY_NAME, entity.getName());
         data.put(ENTITY_LOGIN, entity.getLogin());
         data.put(ENTITY_PASS, entity.getPass());
+        data.put(ENTITY_EMAIL, entity.getEmail());
+        data.put(ENTITY_ADDS, entity.getAdds());
         db.collection(tableName)
                 .document()
                 .set(data)
@@ -44,16 +57,27 @@ class FireDBHelper {
     }
 
     public void addPassword(String tableName, String newPass) {
-        Map<String, Object> data = new HashMap<>();
-        data.put(ENTITY_PASS, newPass);
-        db.collection(tableName)
-                .document(PASS_DOCUMENT)
-                .set(data)
-                .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
-                .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
+        if (tableName.equals("")||newPass.equals("")) return;
+
+        Task<QuerySnapshot> query = db.collection(tableName).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot == null||querySnapshot.isEmpty()) {
+                            Log.e(TAG, "НЕТ ТАКОГО ПОЛЬЗОВАТЕЛЯ!3!");
+                            Map<String, Object> data = new HashMap<>();
+                            data.put(ENTITY_PASS, newPass);
+                            db.collection(tableName)
+                                    .document(PASS_DOCUMENT)
+                                    .set(data)
+                                    .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
+                                    .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
+                        } else Log.e(TAG, "ТАКОЙ ПОЛЬЗОВАТЕЛЬ УЖЕ ЕСТЬ!!!");
+                    }
+                });
     }
 
     void getEntities(String login, String password) {
+        if (login.equals("")||password.equals("")) return;
         Log.e(TAG, "getEntitiesByParam: password "+password);
 
         Query query = db.collection(login);//Логин -- это название коллекции. Другими словами у
@@ -101,7 +125,9 @@ class FireDBHelper {
         String name = String.valueOf(document.get(ENTITY_NAME));
         String pass = String.valueOf(document.get(ENTITY_PASS));
         String login = String.valueOf(document.get(ENTITY_LOGIN));
-        return new Entity(name, login, pass);
+        String email = String.valueOf(document.get(ENTITY_EMAIL));
+        String adds = String.valueOf(document.get(ENTITY_ADDS));
+        return new Entity(name, login, pass, email, adds);
     }
 
     /**Слушатель для новых событий*/

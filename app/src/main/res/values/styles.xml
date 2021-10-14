@@ -23,7 +23,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">3</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:layout_margin">7dp</item>
         <item name="android:gravity">center</item>
         <item name="elevation">6dp</item>
         <item name="background">@drawable/edit_text_field</item>
@@ -38,5 +37,15 @@
         <item name="android:gravity">end</item>
         <item name="android:textColor">@color/main_orange</item>
     </style>
+
+    <style name="itemDataText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:textColor">@color/mygreen_light</item>
+    </style>
+
+
 
 </resources>

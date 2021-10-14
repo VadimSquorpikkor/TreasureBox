@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/login_line"
+        android:cursorVisible="false"
+        android:background="@drawable/edit_text_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Логин"
+        android:minWidth="150dp"
+        android:textColor="?attr/MyButtonPressed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/password_line"
+        tools:text="squorpikkor" />
+
     <TextView
         android:id="@+id/password_line"
         android:layout_width="wrap_content"
@@ -15,11 +31,11 @@
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/login_line" />
+<!--        android:inputType="textPassword"-->
 
     <include
         android:id="@+id/include"
-        layout="@layout/button_layer"
-        />
+        layout="@layout/button_layer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,10 +26,14 @@ public class InputEntityDialog extends BaseDialog{
         EditText nameText = view.findViewById(R.id.name);
         EditText loginText = view.findViewById(R.id.login);
         EditText passText = view.findViewById(R.id.pass);
+        EditText emailText = view.findViewById(R.id.email);
+        EditText addsText = view.findViewById(R.id.adds);
         String name = nameText.getText().toString();
         String login = loginText.getText().toString();
         String pass = passText.getText().toString();
-        mViewModel.addEntityToDB(mViewModel.getLogin(), new Entity(name, login, pass));
+        String email = emailText.getText().toString();
+        String adds = addsText.getText().toString();
+        mViewModel.addEntityToDB(mViewModel.getLogin(), new Entity(name, login, pass, email, adds));
         dismiss();
     }
 }

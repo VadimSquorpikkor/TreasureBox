@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/name"
             android:textColor="@color/main_orange"
@@ -27,6 +26,19 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="email: "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/email"
+                style="@style/itemDataText"
+                tool:text="213@mail" />
+
+            <TextView
+                android:id="@+id/login_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Логин: "
@@ -34,13 +46,11 @@
 
             <TextView
                 android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:textSize="12sp"
+                style="@style/itemDataText"
                 tool:text="Логин" />
 
             <TextView
+                android:id="@+id/pass_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Пароль: "
@@ -48,13 +58,24 @@
 
             <TextView
                 android:id="@+id/pass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
+                style="@style/itemDataText"
                 tool:text="Пароль" />
 
-
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/adds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tool:text="Доп. данные"/>
+
+    </LinearLayout>
 
     </LinearLayout>
 

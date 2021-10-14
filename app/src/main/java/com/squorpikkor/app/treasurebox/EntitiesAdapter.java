@@ -83,17 +83,33 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
         return new AdapterViewHolder(view);
     }
 
+    private void setView(String data, TextView titleView, TextView dataView) {
+        if (data==null) {
+            dataView.setVisibility(View.GONE);
+            if (titleView!=null) titleView.setVisibility(View.GONE);
+            return;
+        }
+        data = Encrypter2.decrypt(password, data);
+        if (data.equals("null") || data.equals("")) {
+            dataView.setVisibility(View.GONE);
+            if (titleView!=null) titleView.setVisibility(View.GONE);
+        } else {
+            dataView.setVisibility(View.VISIBLE);
+            if (titleView!=null) titleView.setVisibility(View.VISIBLE);
+            dataView.setText(data);
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         Entity entity = list.get(position);
-        if (entity.getName().equals("null")) holder.name.setText("");
+        if (entity.getName().equals("null")) holder.name.setText("- - -");
         else holder.name.setText(Encrypter2.decrypt(password, entity.getName()));
 
-        if (entity.getLogin().equals("null")) holder.login.setText("");
-        else holder.login.setText(Encrypter2.decrypt(password, entity.getLogin()));
-
-        if (entity.getPass().equals("null")) holder.pass.setText("");
-        else holder.pass.setText(Encrypter2.decrypt(password, entity.getPass()));
+        setView(entity.getLogin(), holder.loginTitle,   holder.login);
+        setView(entity.getPass(),  holder.passTitle,    holder.pass);
+        setView(entity.getEmail(), holder.emailTitle,   holder.email);
+        setView(entity.getAdds(),  null,       holder.adds);
     }
 
     @Override
@@ -105,13 +121,23 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
 
         private final TextView name;
         private final TextView pass;
+        private final TextView passTitle;
         private final TextView login;
+        private final TextView loginTitle;
+        private final TextView email;
+        private final TextView emailTitle;
+        private final TextView adds;
 
         public AdapterViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             pass = view.findViewById(R.id.login);
+            passTitle = view.findViewById(R.id.login_title);
             login = view.findViewById(R.id.pass);
+            loginTitle = view.findViewById(R.id.pass_title);
+            email = view.findViewById(R.id.email);
+            emailTitle = view.findViewById(R.id.email_title);
+            adds = view.findViewById(R.id.adds);
 
             /**Если задан ItemClickListener, то клик по пункту списка возвращает номер позиции;
              * если задан DeviceClickListener, то клик по пункту списка возвращает номер позиции возвращает объект BluetoothDevice соответствующий позиции в списке*/

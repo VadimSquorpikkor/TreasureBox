@@ -25,18 +25,9 @@ public class MainViewModel  extends ViewModel {
      * напрямую в firebase БД)
      * */
 
-    /**Название поля для имени в БД*/
-    public static final String ENTITY_NAME = "1";
-    /**Название поля для пароля в БД*/
-    public static final String ENTITY_PASS = "2";
-    /**Название поля для логина в БД, не путать с логином пользователя приложения*/
-    public static final String ENTITY_LOGIN = "3";
-    /**Название документа с паролем в БД*/
-    public static final String PASS_DOCUMENT = "0";
+
 
     public static final String TAG = "TAG";
-    public static final int PRESS_CLEAR_BUTTON = 100;
-    public static final int PRESS_OK_BUTTON = 101;
 
     private final FireDBHelper db;
     private final MutableLiveData<ArrayList<Entity>> entitiesList;
@@ -46,22 +37,19 @@ public class MainViewModel  extends ViewModel {
     private String pass;//todo объединить pass и passLine ()
 
     public MainViewModel() {
-//        PASS_DOCUMENT = Encrypter2.encrypt("squorpikkor", "_password_key_");
         entitiesList = new MutableLiveData<>();
         db = new FireDBHelper(entitiesList);
         passLine = new MutableLiveData<>();
         pass = "";
         passLine.setValue("");
-        proverochka();
-//        addPassword();
     }
 
     public String getLogin() {
         return login;
     }
 
-    private void proverochka() {
-        login = "squorpikkor";
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public void clearStroke() {
@@ -72,6 +60,7 @@ public class MainViewModel  extends ViewModel {
     public void clickButton(int i) {
         pass+=i;
         passLine.setValue(passLine.getValue()+"*");
+//        passLine.setValue(passLine.getValue()+i);
     }
 
     public void openBox() {
@@ -80,20 +69,32 @@ public class MainViewModel  extends ViewModel {
 //        passLine.setValue("");
     }
 
+    public static final String KEY_LOGIN = "key_login";
+
+    public void saveLogin(String login) {
+        SaveLoad.save(KEY_LOGIN, login);
+    }
+
+    public String loadLogin() {
+        return SaveLoad.getString(KEY_LOGIN);
+    }
+
     /**Все поля объекта Entity сразу шифруются, затем этот шифрованный Entity передается в FireDBHelper*/
     void addEntityToDB(String login, Entity entity) {
         Entity codedEntity = new Entity(
                 Encrypter2.encrypt(login, entity.getName()),
                 Encrypter2.encrypt(login, entity.getLogin()),
-                Encrypter2.encrypt(login, entity.getPass())
+                Encrypter2.encrypt(login, entity.getPass()),
+                Encrypter2.encrypt(login, entity.getEmail()),
+                Encrypter2.encrypt(login, entity.getAdds())
         );
         db.addNewEventListener(login, Encrypter2.encrypt(login, pass));
         db.addUnitToDB(login, codedEntity);
     }
 
     /**Метод записывает в БД пароль. Если коллекции для этого пользователя ещё нет, она будет создана*/
-    public void addPassword() {
-        db.addPassword(login, Encrypter2.encrypt(login, "2985984"));
+    public void addPasswordAndLogin(String login) {
+        db.addPassword(login, Encrypter2.encrypt(login, pass));
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {

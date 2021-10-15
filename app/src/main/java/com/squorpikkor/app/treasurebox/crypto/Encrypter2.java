@@ -30,14 +30,8 @@ public class Encrypter2 {
      * @param message строка для шифрования
      * @return зашифрованная строка
      */
-    public static String encrypt(String message) {
-        String encryptedMsg = "";
-        try {
-            encryptedMsg = AESCrypt.encrypt(DEFAULT_PASSWORD, message);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        return encryptedMsg;
+    public static String encrypt_(String message) {
+        return encrypt(DEFAULT_PASSWORD, message);
     }
 
     /**Расшифровывает строку, зашифрованную симметричным шифрованием AES
@@ -62,14 +56,8 @@ public class Encrypter2 {
      * @param encryptedMsg зашифрованная строка
      * @return расшифрованная строка
      */
-    public static String decrypt(String encryptedMsg) {
-        String messageAfterDecrypt = "";
-        try {
-            messageAfterDecrypt = AESCrypt.decrypt(DEFAULT_PASSWORD, encryptedMsg);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        return messageAfterDecrypt;
+    public static String decrypt_(String encryptedMsg) {
+        return decrypt(DEFAULT_PASSWORD, encryptedMsg);
     }
 
 }

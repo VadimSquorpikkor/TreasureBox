@@ -1,4 +1,4 @@
-package com.squorpikkor.app.treasurebox;
+package com.squorpikkor.app.treasurebox.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+
+import com.squorpikkor.app.treasurebox.Entity;
+import com.squorpikkor.app.treasurebox.R;
 
 public class InputEntityDialog extends BaseDialog{
 

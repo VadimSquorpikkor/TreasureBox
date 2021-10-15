@@ -1,4 +1,4 @@
-package com.squorpikkor.app.treasurebox;
+package com.squorpikkor.app.treasurebox.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.Window;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.squorpikkor.app.treasurebox.MainActivity;
+import com.squorpikkor.app.treasurebox.MainViewModel;
 
 
 /**Базовый класс для диалогов. Есть варианты с ViewModel и без*/

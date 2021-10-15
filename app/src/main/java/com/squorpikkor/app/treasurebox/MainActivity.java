@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import com.squorpikkor.app.treasurebox.fragment.PassFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

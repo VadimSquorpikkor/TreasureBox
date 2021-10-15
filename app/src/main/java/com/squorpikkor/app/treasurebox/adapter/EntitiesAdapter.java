@@ -1,4 +1,4 @@
-package com.squorpikkor.app.treasurebox;
+package com.squorpikkor.app.treasurebox.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squorpikkor.app.treasurebox.Entity;
+import com.squorpikkor.app.treasurebox.R;
 import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
 
 import java.util.ArrayList;
@@ -44,22 +46,25 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
         notifyDataSetChanged();
     }
 
-    /**
-     * Лисенер, который будет возвращать позицию выбранного элемента
-     */
+    /**Лисенер, который будет возвращать позицию выбранного элемента*/
     private OnItemClickListener onItemClickListener;
 
-    /**
-     * Лисенер, который будет возвращать объект Entity по позиции выбранного элемента
-     */
-    private OnDeviceClickListener onObjectClickListener;
+    /**Лисенер, который будет возвращать объект Entity по позиции выбранного элемента*/
+    private OnObjectClickListener onObjectClickListener;
+
+    private OnLongClickListener onLongClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public interface OnDeviceClickListener {
-        void onObjectClick(Entity nuclide);
+    public interface OnObjectClickListener {
+        void onObjectClick(Entity entity);
+    }
+
+    public interface OnLongClickListener {
+//        void onLongClick(String docName);
+        void onLongClick(int position);
     }
 
     /**
@@ -72,8 +77,12 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
     /**
      * Сеттер на лисенер2
      */
-    public void setOnObjectClickListener(OnDeviceClickListener onNuclideClickListener) {
-        this.onObjectClickListener = onNuclideClickListener;
+    public void setOnObjectClickListener(OnObjectClickListener onObjectClickListener) {
+        this.onObjectClickListener = onObjectClickListener;
+    }
+
+    public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
+        this.onLongClickListener = onLongClickListener;
     }
 
     @NonNull
@@ -146,6 +155,14 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
                     onItemClickListener.onItemClick(getAdapterPosition());
                 if (onObjectClickListener != null)
                     onObjectClickListener.onObjectClick(list.get(getAdapterPosition()));
+            });
+
+            /**Если задан LongClickListener, то долгий клик по пункту списка возвращает имя документа в Firebase, в котором находятся данные выбранного Entity*/
+            view.setOnLongClickListener(v -> {
+                if (onLongClickListener != null)
+//                    onLongClickListener.onLongClick(list.get(getAdapterPosition()).getDocName());
+                    onLongClickListener.onLongClick(getAdapterPosition());
+                return false;
             });
 
         }

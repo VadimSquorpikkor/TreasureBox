@@ -1,6 +1,7 @@
-package com.squorpikkor.app.treasurebox;
+package com.squorpikkor.app.treasurebox.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squorpikkor.app.treasurebox.dialog.DeleteDialog;
+import com.squorpikkor.app.treasurebox.dialog.InputEntityDialog;
+import com.squorpikkor.app.treasurebox.MainViewModel;
+import com.squorpikkor.app.treasurebox.R;
+import com.squorpikkor.app.treasurebox.adapter.EntitiesAdapter;
 
 public class ListFragment extends Fragment {
 
@@ -31,6 +38,7 @@ public class ListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         mViewModel.getEntitiesList().observe(requireActivity(), entities -> adapter.setList(entities));
+        adapter.setOnLongClickListener(this::openDeleteDialog);
 
         mViewModel.openBox();
 
@@ -41,6 +49,11 @@ public class ListFragment extends Fragment {
 
     private void openInputDialog() {
         InputEntityDialog dialog = new InputEntityDialog();
+        dialog.show(getParentFragmentManager(), null);
+    }
+
+    public void openDeleteDialog(int position) {
+        DeleteDialog dialog = new DeleteDialog(position);
         dialog.show(getParentFragmentManager(), null);
     }
 }

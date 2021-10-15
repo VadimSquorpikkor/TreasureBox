@@ -2,6 +2,7 @@ package com.squorpikkor.app.treasurebox;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -110,7 +111,7 @@ class FireDBHelper {
                                     ArrayList<Entity> list = new ArrayList<>();
                                     for (DocumentSnapshot document2 : task.getResult()) {
                                         Entity entity = getEntityFromSnapshot(document2);
-                                        list.add(entity);
+                                        if (!entity.getDocName().equals(PASS_DOCUMENT)) list.add(entity);//Документ с паролем не грузим
                                     }
                                     entitiesList.setValue(list);
 //                                    entitiesList.setValue(entitiesList.getValue());
@@ -127,7 +128,7 @@ class FireDBHelper {
         String login = String.valueOf(document.get(ENTITY_LOGIN));
         String email = String.valueOf(document.get(ENTITY_EMAIL));
         String adds = String.valueOf(document.get(ENTITY_ADDS));
-        return new Entity(name, login, pass, email, adds);
+        return new Entity(name, login, pass, email, adds, document.getId());
     }
 
     /**Слушатель для новых событий*/
@@ -135,4 +136,9 @@ class FireDBHelper {
         db.collection(login).addSnapshotListener((queryDocumentSnapshots, error) -> getEntities(login, password));
     }
 
+    public void deleteDocument(String login, String docName) {
+        db.collection(login).document(docName)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"));
+    }
 }

@@ -1,9 +1,13 @@
 package com.squorpikkor.app.treasurebox;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
+import com.squorpikkor.app.treasurebox.dialog.DeleteDialog;
+import com.squorpikkor.app.treasurebox.dialog.InputEntityDialog;
 
 import java.util.ArrayList;
 
@@ -24,8 +28,6 @@ public class MainViewModel  extends ViewModel {
      * имена задаются в приложении при создании (или редактировании) новой сущности (или админом
      * напрямую в firebase БД)
      * */
-
-
 
     public static final String TAG = "TAG";
 
@@ -80,7 +82,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     /**Все поля объекта Entity сразу шифруются, затем этот шифрованный Entity передается в FireDBHelper*/
-    void addEntityToDB(String login, Entity entity) {
+    public void addEntityToDB(String login, Entity entity) {
         Entity codedEntity = new Entity(
                 Encrypter2.encrypt(login, entity.getName()),
                 Encrypter2.encrypt(login, entity.getLogin()),
@@ -104,14 +106,14 @@ public class MainViewModel  extends ViewModel {
         return passLine;
     }
 
-    public void addNewEventListener() {
-        db.addNewEventListener(login, Encrypter2.encrypt(login, pass));
-    }
-
-
     public void closeBox() {
         pass = "";
         passLine.setValue("");
         entitiesList.setValue(new ArrayList<>());
+    }
+
+    public void deleteDocumentByName(String docName) {
+        db.addNewEventListener(login, Encrypter2.encrypt(login, pass));
+        db.deleteDocument(login, docName);
     }
 }

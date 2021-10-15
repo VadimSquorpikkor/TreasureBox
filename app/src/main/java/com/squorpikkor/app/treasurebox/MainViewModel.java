@@ -1,14 +1,9 @@
 package com.squorpikkor.app.treasurebox;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
-import com.squorpikkor.app.treasurebox.dialog.DeleteDialog;
-import com.squorpikkor.app.treasurebox.dialog.InputEntityDialog;
-
 import java.util.ArrayList;
 
 public class MainViewModel  extends ViewModel {
@@ -50,6 +45,10 @@ public class MainViewModel  extends ViewModel {
         return login;
     }
 
+    /*public String getEncryptedLogin() {
+        return Encrypter2.encrypt(login, login);
+    }*/
+
     public void setLogin(String login) {
         this.login = login;
     }
@@ -66,7 +65,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     public void openBox() {
-        db.getEntities(login, Encrypter2.encrypt(login, pass));
+        db.getEntities(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
 //        pass = "";
 //        passLine.setValue("");
     }
@@ -90,13 +89,13 @@ public class MainViewModel  extends ViewModel {
                 Encrypter2.encrypt(login, entity.getEmail()),
                 Encrypter2.encrypt(login, entity.getAdds())
         );
-        db.addNewEventListener(login, Encrypter2.encrypt(login, pass));
-        db.addUnitToDB(login, codedEntity);
+        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
+        db.addUnitToDB(Encrypter2.encrypt(login, login), codedEntity);
     }
 
     /**Метод записывает в БД пароль. Если коллекции для этого пользователя ещё нет, она будет создана*/
     public void addPasswordAndLogin(String login) {
-        db.addPassword(login, Encrypter2.encrypt(login, pass));
+        db.addPassword(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
@@ -113,7 +112,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     public void deleteDocumentByName(String docName) {
-        db.addNewEventListener(login, Encrypter2.encrypt(login, pass));
-        db.deleteDocument(login, docName);
+        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
+        db.deleteDocument(Encrypter2.encrypt(login, login), docName);
     }
 }

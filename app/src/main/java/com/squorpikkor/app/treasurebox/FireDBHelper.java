@@ -9,6 +9,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ class FireDBHelper {
     }
 
     /**Имя таблицы — это логин пользователя*/
-    void addUnitToDB(String tableName, Entity entity) {
+    void addEntityToDB(String tableName, Entity entity) {
         Map<String, Object> data = new HashMap<>();
         data.put(ENTITY_NAME, entity.getName());
         data.put(ENTITY_LOGIN, entity.getLogin());
@@ -52,6 +54,20 @@ class FireDBHelper {
         data.put(ENTITY_ADDS, entity.getAdds());
         db.collection(tableName)
                 .document()
+                .set(data)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
+                .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
+    }
+
+    public void updateEntityToDB(String tableName, Entity entity, String docName) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(ENTITY_NAME, entity.getName());
+        data.put(ENTITY_LOGIN, entity.getLogin());
+        data.put(ENTITY_PASS, entity.getPass());
+        data.put(ENTITY_EMAIL, entity.getEmail());
+        data.put(ENTITY_ADDS, entity.getAdds());
+        db.collection(tableName)
+                .document(docName)
                 .set(data)
                 .addOnSuccessListener(aVoid -> Log.e(TAG, "DocumentSnapshot successfully written!"))//todo toast
                 .addOnFailureListener(e -> Log.e(TAG, "Error writing document", e));//todo toast
@@ -141,4 +157,6 @@ class FireDBHelper {
                 .delete()
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"));
     }
+
+
 }

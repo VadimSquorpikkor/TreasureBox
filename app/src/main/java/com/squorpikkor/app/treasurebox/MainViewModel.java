@@ -1,5 +1,7 @@
 package com.squorpikkor.app.treasurebox;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -90,7 +92,19 @@ public class MainViewModel  extends ViewModel {
                 Encrypter2.encrypt(login, entity.getAdds())
         );
         db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
-        db.addUnitToDB(Encrypter2.encrypt(login, login), codedEntity);
+        db.addEntityToDB(Encrypter2.encrypt(login, login), codedEntity);
+    }
+
+    public void updateEntityToDB(String login, Entity entity) {
+        Entity codedEntity = new Entity(
+                Encrypter2.encrypt(login, entity.getName()),
+                Encrypter2.encrypt(login, entity.getLogin()),
+                Encrypter2.encrypt(login, entity.getPass()),
+                Encrypter2.encrypt(login, entity.getEmail()),
+                Encrypter2.encrypt(login, entity.getAdds())
+        );
+        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
+        db.updateEntityToDB(Encrypter2.encrypt(login, login), codedEntity, entity.getDocName());
     }
 
     /**Метод записывает в БД пароль. Если коллекции для этого пользователя ещё нет, она будет создана*/

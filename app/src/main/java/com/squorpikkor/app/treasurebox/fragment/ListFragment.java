@@ -1,7 +1,6 @@
 package com.squorpikkor.app.treasurebox.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squorpikkor.app.treasurebox.Entity;
 import com.squorpikkor.app.treasurebox.dialog.DeleteDialog;
 import com.squorpikkor.app.treasurebox.dialog.InputEntityDialog;
 import com.squorpikkor.app.treasurebox.MainViewModel;
@@ -26,12 +26,13 @@ public class ListFragment extends Fragment {
     }
 
     private EntitiesAdapter adapter;
+    MainViewModel mViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        MainViewModel mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         adapter = new EntitiesAdapter(mViewModel.getLogin());
@@ -39,6 +40,7 @@ public class ListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         mViewModel.getEntitiesList().observe(requireActivity(), entities -> adapter.setList(entities));
         adapter.setOnLongClickListener(this::openDeleteDialog);
+        adapter.setOnObjectClickListener(this::openRenameDialog);
 
         mViewModel.openBox();
 
@@ -54,6 +56,11 @@ public class ListFragment extends Fragment {
 
     public void openDeleteDialog(int position) {
         DeleteDialog dialog = new DeleteDialog(position);
+        dialog.show(getParentFragmentManager(), null);
+    }
+
+    void openRenameDialog(Entity entity) {
+        InputEntityDialog dialog = new InputEntityDialog(entity);
         dialog.show(getParentFragmentManager(), null);
     }
 }

@@ -1,6 +1,6 @@
 package com.squorpikkor.app.treasurebox;
 
-import android.util.Log;
+import android.os.Vibrator;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,6 +27,7 @@ public class MainViewModel  extends ViewModel {
      * */
 
     public static final String TAG = "TAG";
+    public static final int VIBE_TIME = 50;
 
     private final FireDBHelper db;
     private final MutableLiveData<ArrayList<Entity>> entitiesList;
@@ -60,7 +61,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     private void createMainKey() {
-        main_key = login;
+        main_key = pass+login;
     }
 
     public void clearStroke() {
@@ -68,17 +69,14 @@ public class MainViewModel  extends ViewModel {
         passLine.setValue("");
     }
 
-    public void clickButton(int i) {
+    public void clickButton(int i, Vibrator vibe) {
+        vibe.vibrate(VIBE_TIME);
         pass+=i;
         passLine.setValue(passLine.getValue()+"*");
-//        passLine.setValue(passLine.getValue()+i);
     }
 
     public void openBox() {
-
-        db.getEntities(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
-//        pass = "";
-//        passLine.setValue("");
+        db.getEntities(login, Encrypter2.encrypt(main_key, main_key));
     }
 
     public static final String KEY_LOGIN = "key_login";
@@ -100,8 +98,8 @@ public class MainViewModel  extends ViewModel {
                 Encrypter2.encrypt(main_key, entity.getEmail()),
                 Encrypter2.encrypt(main_key, entity.getAdds())
         );
-        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
-        db.addEntityToDB(Encrypter2.encrypt(main_key, login), codedEntity);
+        db.addNewEventListener(login, Encrypter2.encrypt(main_key, main_key));
+        db.addEntityToDB(login, codedEntity);
     }
 
     public void updateEntityToDB(Entity entity) {
@@ -112,13 +110,14 @@ public class MainViewModel  extends ViewModel {
                 Encrypter2.encrypt(main_key, entity.getEmail()),
                 Encrypter2.encrypt(main_key, entity.getAdds())
         );
-        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
-        db.updateEntityToDB(Encrypter2.encrypt(main_key, login), codedEntity, entity.getDocName());
+        db.addNewEventListener(login, Encrypter2.encrypt(main_key, main_key));
+        db.updateEntityToDB(login, codedEntity, entity.getDocName());
     }
 
     /**Метод записывает в БД пароль. Если коллекции для этого пользователя ещё нет, она будет создана*/
-    public void addPasswordAndLogin(String login) {
-        db.addPassword(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
+    public void addPasswordAndLogin() {
+        createMainKey();
+        db.addPassword(login, Encrypter2.encrypt(main_key, main_key));
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
@@ -135,7 +134,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     public void deleteDocumentByName(String docName) {
-        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
-        db.deleteDocument(Encrypter2.encrypt(main_key, login), docName);
+        db.addNewEventListener(login, Encrypter2.encrypt(main_key, main_key));
+        db.deleteDocument(login, docName);
     }
 }

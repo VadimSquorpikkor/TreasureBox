@@ -2,14 +2,11 @@ package com.squorpikkor.app.treasurebox;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -76,7 +73,7 @@ class FireDBHelper {
     public void addPassword(String tableName, String newPass) {
         if (tableName.equals("")||newPass.equals("")) return;
 
-        Task<QuerySnapshot> query = db.collection(tableName).get().addOnCompleteListener(task -> {
+        db.collection(tableName).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot == null||querySnapshot.isEmpty()) {
@@ -95,7 +92,6 @@ class FireDBHelper {
 
     void getEntities(String login, String password) {
         if (login.equals("")||password.equals("")) return;
-        Log.e(TAG, "getEntitiesByParam: password "+password);
 
         Query query = db.collection(login);//Логин -- это название коллекции. Другими словами у
         // каждого пользователя пароли храняться в отдельной коллекции, название которой -- это имя пользоватеоля

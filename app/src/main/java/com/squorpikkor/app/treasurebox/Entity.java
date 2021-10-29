@@ -1,12 +1,15 @@
 package com.squorpikkor.app.treasurebox;
 
 public class Entity {
-    private final String name;
-    private final String login;
-    private final String pass;
-    private final String email;
-    private final String adds;
+    private String name;
+    private String login;
+    private String pass;
+    private String email;
+    private String adds;
     private String docName;//имя документа в Firebase. Нужно для удаления по имени документа
+
+    public Entity() {
+    }
 
     public Entity(String name, String login, String pass, String email, String adds, String docName) {
         this.name = name;

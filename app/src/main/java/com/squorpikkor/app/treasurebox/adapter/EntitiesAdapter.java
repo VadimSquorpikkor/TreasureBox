@@ -140,10 +140,10 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
         public AdapterViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
-            pass = view.findViewById(R.id.login);
-            passTitle = view.findViewById(R.id.login_title);
-            login = view.findViewById(R.id.pass);
-            loginTitle = view.findViewById(R.id.pass_title);
+            pass = view.findViewById(R.id.pass);
+            passTitle = view.findViewById(R.id.pass_title);
+            login = view.findViewById(R.id.login);
+            loginTitle = view.findViewById(R.id.login_title);
             email = view.findViewById(R.id.email);
             emailTitle = view.findViewById(R.id.email_title);
             adds = view.findViewById(R.id.adds);

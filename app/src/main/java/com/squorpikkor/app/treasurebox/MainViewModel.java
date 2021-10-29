@@ -34,6 +34,7 @@ public class MainViewModel  extends ViewModel {
 
     private String login;
     private String pass;//todo объединить pass и passLine ()
+    private String main_key;//ключ шифрования
 
     public MainViewModel() {
         entitiesList = new MutableLiveData<>();
@@ -43,16 +44,23 @@ public class MainViewModel  extends ViewModel {
         passLine.setValue("");
     }
 
-    public String getLogin() {
-        return login;
+    public String getMain_key() {
+        return main_key;
     }
 
-    /*public String getEncryptedLogin() {
-        return Encrypter2.encrypt(login, login);
-    }*/
-
-    public void setLogin(String login) {
+    /**Несмотря на название, метод передает (и сохраняет) только логин, пароль не передается, так
+     * как он изначально записывается посимвольно в viewModel; очевиднее было бы в фрагменте
+     * передавать и пароль и логин (и размещать всю логику click кнопок и вывода строки со
+     * звездочками и не засорять viewModel), но пока так, потому что просто решаю сохранение
+     * состояния UI после поворота устройства. Потом перенесу логику кнопок в фрагмент, но пока так*/
+    public void setLoginAndPassword(String login/*, String password*/) {
         this.login = login;
+        saveLogin(login);
+        createMainKey();
+    }
+
+    private void createMainKey() {
+        main_key = login;
     }
 
     public void clearStroke() {
@@ -67,7 +75,8 @@ public class MainViewModel  extends ViewModel {
     }
 
     public void openBox() {
-        db.getEntities(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
+
+        db.getEntities(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
 //        pass = "";
 //        passLine.setValue("");
     }
@@ -83,33 +92,33 @@ public class MainViewModel  extends ViewModel {
     }
 
     /**Все поля объекта Entity сразу шифруются, затем этот шифрованный Entity передается в FireDBHelper*/
-    public void addEntityToDB(String login, Entity entity) {
+    public void addEntityToDB(Entity entity) {
         Entity codedEntity = new Entity(
-                Encrypter2.encrypt(login, entity.getName()),
-                Encrypter2.encrypt(login, entity.getLogin()),
-                Encrypter2.encrypt(login, entity.getPass()),
-                Encrypter2.encrypt(login, entity.getEmail()),
-                Encrypter2.encrypt(login, entity.getAdds())
+                Encrypter2.encrypt(main_key, entity.getName()),
+                Encrypter2.encrypt(main_key, entity.getLogin()),
+                Encrypter2.encrypt(main_key, entity.getPass()),
+                Encrypter2.encrypt(main_key, entity.getEmail()),
+                Encrypter2.encrypt(main_key, entity.getAdds())
         );
-        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
-        db.addEntityToDB(Encrypter2.encrypt(login, login), codedEntity);
+        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
+        db.addEntityToDB(Encrypter2.encrypt(main_key, login), codedEntity);
     }
 
-    public void updateEntityToDB(String login, Entity entity) {
+    public void updateEntityToDB(Entity entity) {
         Entity codedEntity = new Entity(
-                Encrypter2.encrypt(login, entity.getName()),
-                Encrypter2.encrypt(login, entity.getLogin()),
-                Encrypter2.encrypt(login, entity.getPass()),
-                Encrypter2.encrypt(login, entity.getEmail()),
-                Encrypter2.encrypt(login, entity.getAdds())
+                Encrypter2.encrypt(main_key, entity.getName()),
+                Encrypter2.encrypt(main_key, entity.getLogin()),
+                Encrypter2.encrypt(main_key, entity.getPass()),
+                Encrypter2.encrypt(main_key, entity.getEmail()),
+                Encrypter2.encrypt(main_key, entity.getAdds())
         );
-        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
-        db.updateEntityToDB(Encrypter2.encrypt(login, login), codedEntity, entity.getDocName());
+        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
+        db.updateEntityToDB(Encrypter2.encrypt(main_key, login), codedEntity, entity.getDocName());
     }
 
     /**Метод записывает в БД пароль. Если коллекции для этого пользователя ещё нет, она будет создана*/
     public void addPasswordAndLogin(String login) {
-        db.addPassword(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
+        db.addPassword(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
     }
 
     public MutableLiveData<ArrayList<Entity>> getEntitiesList() {
@@ -126,7 +135,7 @@ public class MainViewModel  extends ViewModel {
     }
 
     public void deleteDocumentByName(String docName) {
-        db.addNewEventListener(Encrypter2.encrypt(login, login), Encrypter2.encrypt(login, pass));
-        db.deleteDocument(Encrypter2.encrypt(login, login), docName);
+        db.addNewEventListener(Encrypter2.encrypt(main_key, login), Encrypter2.encrypt(main_key, pass));
+        db.deleteDocument(Encrypter2.encrypt(main_key, login), docName);
     }
 }

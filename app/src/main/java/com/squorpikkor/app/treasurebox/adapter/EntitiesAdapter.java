@@ -23,11 +23,11 @@ import java.util.ArrayList;
  */
 public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.AdapterViewHolder> {
 
-    String password = "";
+    String main_key = "";
 
     /**Конструктор. Пароль — это логин пользователя*/
-    public EntitiesAdapter(String password) {
-        this.password = password;
+    public EntitiesAdapter(String main_key) {
+        this.main_key = main_key;
     }
 
     /**
@@ -98,7 +98,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
             if (titleView!=null) titleView.setVisibility(View.GONE);
             return;
         }
-        data = Encrypter2.decrypt(password, data);
+        data = Encrypter2.decrypt(main_key, data);
         if (data.equals("null") || data.equals("")) {
             dataView.setVisibility(View.GONE);
             if (titleView!=null) titleView.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.Adapte
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         Entity entity = list.get(position);
         if (entity.getName().equals("null")) holder.name.setText("- - -");
-        else holder.name.setText(Encrypter2.decrypt(password, entity.getName()));
+        else holder.name.setText(Encrypter2.decrypt(main_key, entity.getName()));
 
         setView(entity.getLogin(), holder.loginTitle,   holder.login);
         setView(entity.getPass(),  holder.passTitle,    holder.pass);

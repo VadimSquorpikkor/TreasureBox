@@ -93,11 +93,11 @@ class FireDBHelper {
                 });
     }
 
-    void getEntities(String collection, String password) {
-        if (collection.equals("")||password.equals("")) return;
+    void getEntities(String login, String password) {
+        if (login.equals("")||password.equals("")) return;
         Log.e(TAG, "getEntitiesByParam: password "+password);
 
-        Query query = db.collection(collection);//Логин -- это название коллекции. Другими словами у
+        Query query = db.collection(login);//Логин -- это название коллекции. Другими словами у
         // каждого пользователя пароли храняться в отдельной коллекции, название которой -- это имя пользоватеоля
 
         query.get()
@@ -110,7 +110,7 @@ class FireDBHelper {
                             return;
                         }
                         //Если пользователь есть — проверяем пароль
-                        DocumentReference docRef = db.collection(collection).document(PASS_DOCUMENT);
+                        DocumentReference docRef = db.collection(login).document(PASS_DOCUMENT);
                         docRef.get().addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
                                 DocumentSnapshot document = task2.getResult();

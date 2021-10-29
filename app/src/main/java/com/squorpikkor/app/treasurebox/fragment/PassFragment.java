@@ -44,7 +44,10 @@ public class PassFragment extends Fragment {
         view.findViewById(R.id.button0).setOnClickListener(v -> mViewModel.clickButton(0));
 
         view.findViewById(R.id.button_cl).setOnClickListener(v -> mViewModel.clearStroke());
-        view.findViewById(R.id.button_ok).setOnClickListener(v -> openListFragment(loginLine.getText().toString()));//todo перед открытием проверять пароль (сейчас: если пароль неправильный, то список не загружается)
+        view.findViewById(R.id.button_ok).setOnClickListener(v -> {
+            mViewModel.setLoginAndPassword(loginLine.getText().toString());
+            openListFragment();
+        });//todo перед открытием проверять пароль (сейчас: если пароль неправильный, то список не загружается)
         view.findViewById(R.id.button_ok).setOnLongClickListener(v -> {
             if (view.findViewById(R.id.button_cl).isPressed() && view.findViewById(R.id.button1).isPressed() ) {
                 Toast.makeText(requireActivity(), "Добавление нового аккаунта", Toast.LENGTH_SHORT).show();
@@ -58,9 +61,7 @@ public class PassFragment extends Fragment {
         return view;
     }
 
-    void openListFragment(String login) {
-        mViewModel.setLogin(login);
-        mViewModel.saveLogin(login);
+    void openListFragment() {
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance())
                 .addToBackStack(null)

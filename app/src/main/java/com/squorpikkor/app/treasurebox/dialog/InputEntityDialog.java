@@ -40,14 +40,14 @@ public class InputEntityDialog extends BaseDialog{
         emailText = view.findViewById(R.id.email);
         addsText = view.findViewById(R.id.adds);
 
-        String password = mViewModel.getLogin();
+        String main_key = mViewModel.getMain_key();
 
         if (entity != null) {
-            nameText.setText(Encrypter2.decrypt(password, entity.getName()));
-            loginText.setText(Encrypter2.decrypt(password, entity.getLogin()));
-            passText.setText(Encrypter2.decrypt(password, entity.getPass()));
-            emailText.setText(Encrypter2.decrypt(password, entity.getEmail()));
-            addsText.setText(Encrypter2.decrypt(password, entity.getAdds()));
+            nameText.setText(Encrypter2.decrypt(main_key, entity.getName()));
+            loginText.setText(Encrypter2.decrypt(main_key, entity.getLogin()));
+            passText.setText(Encrypter2.decrypt(main_key, entity.getPass()));
+            emailText.setText(Encrypter2.decrypt(main_key, entity.getEmail()));
+            addsText.setText(Encrypter2.decrypt(main_key, entity.getAdds()));
         }
 
         return dialog;
@@ -59,8 +59,8 @@ public class InputEntityDialog extends BaseDialog{
         String pass = passText.getText().toString();
         String email = emailText.getText().toString();
         String adds = addsText.getText().toString();
-        if (entity==null) mViewModel.addEntityToDB(mViewModel.getLogin(), new Entity(name, login, pass, email, adds));
-        else mViewModel.updateEntityToDB(mViewModel.getLogin(), new Entity(name, login, pass, email, adds, entity.getDocName()));
+        if (entity==null) mViewModel.addEntityToDB(new Entity(name, login, pass, email, adds));
+        else mViewModel.updateEntityToDB(new Entity(name, login, pass, email, adds, entity.getDocName()));
         dismiss();
     }
 }

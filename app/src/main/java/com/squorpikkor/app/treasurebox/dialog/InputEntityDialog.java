@@ -2,6 +2,7 @@ package com.squorpikkor.app.treasurebox.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -40,14 +41,12 @@ public class InputEntityDialog extends BaseDialog{
         emailText = view.findViewById(R.id.email);
         addsText = view.findViewById(R.id.adds);
 
-        String main_key = mViewModel.getMain_key();
-
         if (entity != null) {
-            nameText.setText(Encrypter2.decrypt(main_key, entity.getName()));
-            loginText.setText(Encrypter2.decrypt(main_key, entity.getLogin()));
-            passText.setText(Encrypter2.decrypt(main_key, entity.getPass()));
-            emailText.setText(Encrypter2.decrypt(main_key, entity.getEmail()));
-            addsText.setText(Encrypter2.decrypt(main_key, entity.getAdds()));
+            nameText.setText(entity.getName());
+            loginText.setText(entity.getLogin());
+            passText.setText(entity.getPass());
+            emailText.setText(entity.getEmail());
+            addsText.setText(entity.getAdds());
         }
 
         return dialog;

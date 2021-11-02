@@ -35,7 +35,7 @@ public class ListFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        adapter = new EntitiesAdapter(mViewModel.getMain_key());
+        adapter = new EntitiesAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         mViewModel.getEntitiesList().observe(requireActivity(), entities -> adapter.setList(entities));

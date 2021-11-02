@@ -29,7 +29,7 @@ public class DeleteDialog extends BaseDialog{
         String docName = mViewModel.getEntitiesList().getValue().get(position).getDocName();
         String entityName = mViewModel.getEntitiesList().getValue().get(position).getName();
 
-        ((TextView)view.findViewById(R.id.delete_text)).setText(String.format("Элемент %s будет удален из БД навсегда", Encrypter2.decrypt(mViewModel.getMain_key(), entityName)));
+        ((TextView)view.findViewById(R.id.delete_text)).setText(String.format("Элемент %s будет удален из БД навсегда", entityName));
 
         view.findViewById(R.id.cancel).setOnClickListener(v -> dismiss());
         view.findViewById(R.id.ok).setOnClickListener(v -> {

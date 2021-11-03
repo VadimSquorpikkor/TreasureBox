@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squorpikkor.app.treasurebox.Entity;
 import com.squorpikkor.app.treasurebox.R;
-import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
 
 import java.util.ArrayList;
 
@@ -22,13 +21,6 @@ import java.util.ArrayList;
  * объект Entity соответствующий позиции в списке.
  */
 public class EntitiesAdapter extends RecyclerView.Adapter<EntitiesAdapter.AdapterViewHolder> {
-
-//    private String main_key = "";
-
-    /**Конструктор. Пароль — это логин пользователя*/
-    /*public EntitiesAdapter(String main_key) {
-        this.main_key = main_key;
-    }*/
 
     /**
      * Список объкетов Nuclide для отображения в Recycler

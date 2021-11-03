@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squorpikkor.app.treasurebox.R;
-import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
 
 public class DeleteDialog extends BaseDialog{
 
@@ -26,6 +25,7 @@ public class DeleteDialog extends BaseDialog{
         super.onCreateDialog(savedInstanceState);
         initializeWithVM(R.layout.delete_dialog);
 
+        @SuppressWarnings("ConstantConditions")
         String docName = mViewModel.getEntitiesList().getValue().get(position).getDocName();
         String entityName = mViewModel.getEntitiesList().getValue().get(position).getName();
 

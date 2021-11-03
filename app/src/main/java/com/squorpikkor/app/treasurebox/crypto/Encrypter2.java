@@ -16,7 +16,7 @@ public class Encrypter2 {
      * @return зашифрованная строка
      */
     public static String encrypt(String password, String message) {
-        if (message.equals("")) return "";
+        if (message==null || message.equals("")) return "";
         String encryptedMsg = "";
         try {
             encryptedMsg = AESCrypt.encrypt(password, message);
@@ -42,7 +42,7 @@ public class Encrypter2 {
      * @return расшифрованная строка
      */
     public static String decrypt(String password, String encryptedMsg) {
-        if (encryptedMsg.equals("")) return "";
+        if (encryptedMsg==null || encryptedMsg.equals("")) return "";
         String messageAfterDecrypt = "";
         try {
             messageAfterDecrypt = AESCrypt.decrypt(password, encryptedMsg);

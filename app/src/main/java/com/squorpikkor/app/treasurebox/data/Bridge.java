@@ -20,55 +20,52 @@ public class Bridge {
     private final FireDBHelper fireDBHelper;
     private String main_key;//ключ шифрования
 
-    private final MutableLiveData<ArrayList<Entity>> encodedEntitiesList;
-
     public void createMainKey(String pass, String login) {
         main_key = pass+login;
     }
 
     public Bridge(MutableLiveData<ArrayList<Entity>> entitiesList) {
         this.entitiesList = entitiesList;
-        this.encodedEntitiesList = new MutableLiveData<>();
-        this.fireDBHelper = new FireDBHelper(encodedEntitiesList);
+        MutableLiveData<ArrayList<Entity>> encodedEntitiesList = new MutableLiveData<>();
         encodedEntitiesList.observeForever(this::decodeList);
+        this.fireDBHelper = new FireDBHelper(encodedEntitiesList);
     }
 
     private void decodeList(ArrayList<Entity> list) {
         ArrayList<Entity> decodedList = new ArrayList<>();
-        for (Entity entity:list) {
-            Entity decodedEntity = new Entity(
-                    Encrypter2.decrypt(main_key, entity.getName()),
-                    Encrypter2.decrypt(main_key, entity.getLogin()),
-                    Encrypter2.decrypt(main_key, entity.getPass()),
-                    Encrypter2.decrypt(main_key, entity.getEmail()),
-                    Encrypter2.decrypt(main_key, entity.getAdds()),
-                    entity.getDocName()
-            );
-            decodedList.add(decodedEntity);
-        }
+        for (Entity entity:list) decodedList.add(decodedEntity(entity));
         entitiesList.setValue(decodedList);
     }
 
     public void addEntityToDB(String tableName, Entity entity) {
-        Entity codedEntity = new Entity(
-                Encrypter2.encrypt(main_key, entity.getName()),
-                Encrypter2.encrypt(main_key, entity.getLogin()),
-                Encrypter2.encrypt(main_key, entity.getPass()),
-                Encrypter2.encrypt(main_key, entity.getEmail()),
-                Encrypter2.encrypt(main_key, entity.getAdds())
-        );
-        fireDBHelper.addEntityToDB(tableName, codedEntity);
+        fireDBHelper.addEntityToDB(tableName, encodedEntity(entity));
     }
 
     public void updateEntityToDB(String login, Entity entity) {
-        Entity codedEntity = new Entity(
+        fireDBHelper.updateEntityToDB(login, encodedEntity(entity), entity.getDocName());
+    }
+
+    private Entity encodedEntity(Entity entity) {
+        return new Entity(
                 Encrypter2.encrypt(main_key, entity.getName()),
                 Encrypter2.encrypt(main_key, entity.getLogin()),
                 Encrypter2.encrypt(main_key, entity.getPass()),
                 Encrypter2.encrypt(main_key, entity.getEmail()),
-                Encrypter2.encrypt(main_key, entity.getAdds())
+                Encrypter2.encrypt(main_key, entity.getAdds()),
+                Encrypter2.encrypt(main_key, entity.getCat())
         );
-        fireDBHelper.updateEntityToDB(login, codedEntity, entity.getDocName());
+    }
+
+    private Entity decodedEntity(Entity entity) {
+        return new Entity(
+                Encrypter2.decrypt(main_key, entity.getName()),
+                Encrypter2.decrypt(main_key, entity.getLogin()),
+                Encrypter2.decrypt(main_key, entity.getPass()),
+                Encrypter2.decrypt(main_key, entity.getEmail()),
+                Encrypter2.decrypt(main_key, entity.getAdds()),
+                Encrypter2.decrypt(main_key, entity.getCat()),
+                entity.getDocName()
+        );
     }
 
     public void addNewEventListener(String login) {

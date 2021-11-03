@@ -4,10 +4,7 @@ import android.os.Vibrator;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.squorpikkor.app.treasurebox.crypto.Encrypter2;
 import com.squorpikkor.app.treasurebox.data.Bridge;
-
 import java.util.ArrayList;
 
 public class MainViewModel  extends ViewModel {
@@ -34,6 +31,8 @@ public class MainViewModel  extends ViewModel {
      * обмениваются данными через Bridge, который является по сути переводчиком, и не в курсе, что
      * общаются друг с другом на разных языках. Соответственно данные в ViewModel можно сортировать
      * и искать, так как они уже на этом этапе расшифрованы
+     *
+     * Впрочем, ViewModel и BDHelper ничего не знают друг о друге
      * */
 
     public static final String TAG = "TAG";
@@ -48,20 +47,19 @@ public class MainViewModel  extends ViewModel {
     private String login;
     private String pass;//todo объединить pass и passLine ()
 
+    //Текущая выбранная категория
+    private String catNow;
+    public static final String ALL = "all";
+    public static final String FINANCE = "finance";
 
     public MainViewModel() {
         entitiesList = new MutableLiveData<>();
-//        db = new FireDBHelper(entitiesList);
         bridge = new Bridge(entitiesList);
         passLine = new MutableLiveData<>();
         pass = "";
         passLine.setValue("");
+        catNow = ALL;
     }
-
-    ////////////////////////////////////////////////
-    /*public String getMain_key() {
-        return main_key;
-    }*/
 
     /**Несмотря на название, метод передает (и сохраняет) только логин, пароль не передается, так
      * как он изначально записывается посимвольно в viewModel; очевиднее было бы в фрагменте
@@ -73,8 +71,6 @@ public class MainViewModel  extends ViewModel {
         saveLogin(login);
         bridge.createMainKey(this.pass, this.login);
     }
-
-
 
     public void clearStroke() {
         pass = "";
@@ -136,8 +132,24 @@ public class MainViewModel  extends ViewModel {
         bridge.deleteDocument(login, docName);
     }
 
-    /***/
-    private void decodeEntityList() {
+    public void sortList() {
+
+    }
+
+    public ArrayList<Entity> getFilteredByCategory(ArrayList<Entity> list) {
+        if (catNow.equals(ALL)) return list;
+        ArrayList<Entity> filteredList = new ArrayList<>();
+        for (Entity entity:list) {
+            if (entity.getCat().equals(catNow)) filteredList.add(entity);
+        }
+        return filteredList;
+    }
+
+    public void setCategory(String cat) {
+        this.catNow = cat;
+    }
+
+    public void searchInNames(String s) {
 
     }
 }

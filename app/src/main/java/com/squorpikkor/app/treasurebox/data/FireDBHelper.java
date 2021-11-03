@@ -30,6 +30,8 @@ class FireDBHelper {
     public static final String ENTITY_EMAIL = "4";
 
     public static final String ENTITY_ADDS = "5";
+
+    public static final String ENTITY_CAT = "0";
     /**Название документа с паролем в БД*/
     public static final String PASS_DOCUMENT = "0";
 
@@ -50,6 +52,7 @@ class FireDBHelper {
         data.put(ENTITY_PASS, entity.getPass());
         data.put(ENTITY_EMAIL, entity.getEmail());
         data.put(ENTITY_ADDS, entity.getAdds());
+        data.put(ENTITY_CAT, entity.getCat());
         db.collection(tableName)
                 .document()
                 .set(data)
@@ -64,6 +67,8 @@ class FireDBHelper {
         data.put(ENTITY_PASS, entity.getPass());
         data.put(ENTITY_EMAIL, entity.getEmail());
         data.put(ENTITY_ADDS, entity.getAdds());
+        Log.e(TAG, "updateEntityToDB: "+entity.getCat());
+        data.put(ENTITY_CAT, entity.getCat());
         db.collection(tableName)
                 .document(docName)
                 .set(data)
@@ -141,7 +146,8 @@ class FireDBHelper {
         String login = String.valueOf(document.get(ENTITY_LOGIN));
         String email = String.valueOf(document.get(ENTITY_EMAIL));
         String adds = String.valueOf(document.get(ENTITY_ADDS));
-        return new Entity(name, login, pass, email, adds, document.getId());
+        String cat = String.valueOf(document.get(ENTITY_CAT));
+        return new Entity(name, login, pass, email, adds, cat, document.getId());
     }
 
     /**Слушатель для новых событий*/

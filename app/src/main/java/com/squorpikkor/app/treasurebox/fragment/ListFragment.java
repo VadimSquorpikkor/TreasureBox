@@ -1,9 +1,12 @@
 package com.squorpikkor.app.treasurebox.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,13 +41,34 @@ public class ListFragment extends Fragment {
         adapter = new EntitiesAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
-        mViewModel.getEntitiesList().observe(requireActivity(), entities -> adapter.setList(entities));
+        mViewModel.getEntitiesList().observe(requireActivity(), entities -> adapter.setList(mViewModel.getFilteredByCategory(entities)));
         adapter.setOnLongClickListener(this::openDeleteDialog);
         adapter.setOnObjectClickListener(this::openRenameDialog);
 
         mViewModel.openBox();
 
         view.findViewById(R.id.floatingActionButton).setOnClickListener(v -> openInputDialog());
+
+        EditText catText = view.findViewById(R.id.cat_line);
+
+
+        catText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mViewModel.setCategory(s.toString());
+                mViewModel.getEntitiesList().setValue(mViewModel.getEntitiesList().getValue());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         return view;
     }

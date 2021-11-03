@@ -28,4 +28,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_note_add_24" />
 
+    <EditText
+        android:id="@+id/cat_line"
+        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_field"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:minWidth="150dp"
+        android:textColor="@color/main_orange"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="favorite" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

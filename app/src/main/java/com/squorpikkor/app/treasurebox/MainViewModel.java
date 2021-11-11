@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.squorpikkor.app.treasurebox.data.Bridge;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Locale;
 
 public class MainViewModel  extends ViewModel {
 
@@ -132,11 +134,14 @@ public class MainViewModel  extends ViewModel {
         bridge.deleteDocument(login, docName);
     }
 
-    public void sortList() {
-
+    /**Сортировка списка в алфавитном порядке. Сортируются в не зависимости от регистра*/
+    public void sortList(ArrayList<Entity> list) {
+        //noinspection ComparatorCombinators
+        Collections.sort(list, (o1, o2) -> o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase()));
     }
 
     public ArrayList<Entity> getFilteredByCategory(ArrayList<Entity> list) {
+        sortList(list);
         if (catNow.equals(ALL)) return list;
         ArrayList<Entity> filteredList = new ArrayList<>();
         for (Entity entity:list) {
@@ -149,7 +154,16 @@ public class MainViewModel  extends ViewModel {
         this.catNow = cat;
     }
 
-    public void searchInNames(String s) {
-
+    /**Поиск в именах заметок по совпадению со строкой. Если строка содержит 2 и меньее символов,
+     * такой поиск игнорируется, список не фильтруется. При поиске игнорируется регистр, поиск и по
+     * "EBAY", и по "ebay" покажет то же самое*/
+    public ArrayList<Entity> getMatchedList(ArrayList<Entity> list, String s) {
+        sortList(list);
+        if (s.length()<2) return list;
+        ArrayList<Entity> filteredList = new ArrayList<>();
+        for (Entity entity:list) {
+            if (entity.getName().toLowerCase().contains(s.toLowerCase(Locale.ROOT))) filteredList.add(entity);
+        }
+        return filteredList;
     }
 }

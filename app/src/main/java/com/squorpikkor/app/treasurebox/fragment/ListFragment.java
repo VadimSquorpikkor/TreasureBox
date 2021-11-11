@@ -37,6 +37,25 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         mViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
+        EditText searchText = view.findViewById(R.id.search_line);
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.setList(mViewModel.getMatchedList(mViewModel.getEntitiesList().getValue(), s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         adapter = new EntitiesAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -47,7 +66,7 @@ public class ListFragment extends Fragment {
 
         mViewModel.openBox();
 
-        view.findViewById(R.id.floatingActionButton).setOnClickListener(v -> openInputDialog());
+        view.findViewById(R.id.addNewNoteButton).setOnClickListener(v -> openInputDialog());
 
         EditText catText = view.findViewById(R.id.cat_line);
 

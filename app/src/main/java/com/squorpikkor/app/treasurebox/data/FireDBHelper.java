@@ -24,7 +24,7 @@ class FireDBHelper {
     public static final String ENTITY_NAME = "1";
     /**Название поля для пароля в БД*/
     public static final String ENTITY_PASS = "2";
-    /**Название поля для логина в БД, не путать с логином пользователя приложения*/
+    /**Название поля для "логина" в БД, не путать с логином пользователя приложения*/
     public static final String ENTITY_LOGIN = "3";
 
     public static final String ENTITY_EMAIL = "4";

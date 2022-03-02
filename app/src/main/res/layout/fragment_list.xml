@@ -29,20 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
-            android:id="@+id/cat_line"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/edit_text_field"
-            android:cursorVisible="false"
-            android:gravity="center"
-            android:hint="@string/favorite"
-            android:minWidth="150dp"
-            android:textColor="@color/main_orange"
-            android:textSize="16sp"
-            tools:text="favorite" />
+        <Spinner style="@style/dialogLinearSpinner" android:id="@+id/spinner"/>
 
         <ImageView
             android:id="@+id/addNewNoteButton"

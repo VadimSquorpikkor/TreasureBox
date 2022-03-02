@@ -46,6 +46,8 @@ public class MainViewModel  extends ViewModel {
 
     private final MutableLiveData<String> passLine;
 
+    private final MutableLiveData<ArrayList<String>> catList;
+
     private String login;
     private String pass;//todo объединить pass и passLine ()
 
@@ -61,6 +63,10 @@ public class MainViewModel  extends ViewModel {
         pass = "";
         passLine.setValue("");
         catNow = ALL;
+        ArrayList<String> list = new ArrayList<>();
+        list.add(ALL);
+        list.add("Жена");
+        catList = new MutableLiveData<>(list);
     }
 
     /**Несмотря на название, метод передает (и сохраняет) только логин, пароль не передается, так
@@ -148,6 +154,24 @@ public class MainViewModel  extends ViewModel {
             if (entity.getCat().equals(catNow)) filteredList.add(entity);
         }
         return filteredList;
+    }
+
+    public MutableLiveData<ArrayList<String>> getCatList() {
+        return catList;
+    }
+
+    /**
+     *
+     * Получить в списке категорий номер позиции этой категории. На эту позицию переключаю спиннер.
+     * Если такой категории не найдено (была удалена или переименована), спинер переключится в 0-ю
+     * позицию (первую по счету)*/
+    public int getCatPosition(String s) {
+        if (s.equals("")) return 0;
+        if (catList.getValue().size()==1) return 0;
+        for (int i = 0; i < catList.getValue().size(); i++) {
+            if (catList.getValue().get(i).equals(s)) return i;
+        }
+        return 0;//если такой категории нет, то самая первая категория (ALL)
     }
 
     public void setCategory(String cat) {

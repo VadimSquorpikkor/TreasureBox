@@ -38,6 +38,23 @@
         <item name="android:textColor">@color/main_orange</item>
     </style>
 
+    <style name="dialogLinearHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="dialogLinearSpinner">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">7dp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:scrollbarSize">22dp</item>
+<!--        <item name="android:spinnerMode">dialog</item>-->
+    </style>
+
     <style name="itemDataText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

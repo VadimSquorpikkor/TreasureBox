@@ -6,11 +6,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,8 @@ import com.squorpikkor.app.treasurebox.MainViewModel;
 import com.squorpikkor.app.treasurebox.R;
 import com.squorpikkor.app.treasurebox.adapter.EntitiesAdapter;
 
+import java.util.ArrayList;
+
 public class ListFragment extends Fragment {
 
     public static ListFragment newInstance() {
@@ -30,6 +36,7 @@ public class ListFragment extends Fragment {
 
     private EntitiesAdapter adapter;
     MainViewModel mViewModel;
+    Spinner spinner;
 
     @Nullable
     @Override
@@ -68,7 +75,7 @@ public class ListFragment extends Fragment {
 
         view.findViewById(R.id.addNewNoteButton).setOnClickListener(v -> openInputDialog());
 
-        EditText catText = view.findViewById(R.id.cat_line);
+        /*EditText catText = view.findViewById(R.id.cat_line);
 
 
         catText.addTextChangedListener(new TextWatcher() {
@@ -87,9 +94,30 @@ public class ListFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
             }
+        });*/
+
+        spinner = view.findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mViewModel.setCategory(mViewModel.getCatList().getValue().get(position));
+                mViewModel.getEntitiesList().setValue(mViewModel.getEntitiesList().getValue());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
+        mViewModel.getCatList().observe(getViewLifecycleOwner(), this::updateCatList);
 
         return view;
+    }
+
+    private void updateCatList(ArrayList<String> list) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     private void openInputDialog() {

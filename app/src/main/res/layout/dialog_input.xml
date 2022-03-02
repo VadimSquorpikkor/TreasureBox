@@ -3,14 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:padding="16dp"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+    <LinearLayout style="@style/dialogLinearHorizontal">
 
         <TextView
             style="@style/dialogLinearText"
@@ -20,15 +17,12 @@
         <EditText
             android:id="@+id/name"
             style="@style/dialogLinearEdit"
+            android:background="@drawable/edit_text_field"
             android:hint="Название"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+    <LinearLayout style="@style/dialogLinearHorizontal">
 
         <TextView
             style="@style/dialogLinearText"
@@ -38,15 +32,12 @@
         <EditText
             android:id="@+id/email"
             style="@style/dialogLinearEdit"
+            android:background="@drawable/edit_text_field"
             android:hint="email"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+    <LinearLayout style="@style/dialogLinearHorizontal">
 
         <TextView
             style="@style/dialogLinearText"
@@ -56,15 +47,12 @@
         <EditText
             android:id="@+id/login"
             style="@style/dialogLinearEdit"
+            android:background="@drawable/edit_text_field"
             android:hint="Логин"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+    <LinearLayout style="@style/dialogLinearHorizontal">
 
         <TextView
             style="@style/dialogLinearText"
@@ -74,25 +62,24 @@
         <EditText
             android:id="@+id/pass"
             style="@style/dialogLinearEdit"
+            android:background="@drawable/edit_text_field"
             android:hint="Пароль"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+    <LinearLayout style="@style/dialogLinearHorizontal">
 
         <TextView
             style="@style/dialogLinearText"
             android:text="Категория"
             />
 
-        <EditText
+        <Spinner style="@style/dialogLinearSpinner" android:id="@+id/spinner" android:layout_weight="2"/>
+
+        <!--<EditText
             android:id="@+id/cat"
             style="@style/dialogLinearEdit"
-            android:hint="Категория"/>
+            android:hint="Категория"/>-->
 
     </LinearLayout>
 
@@ -100,12 +87,18 @@
         android:id="@+id/adds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/edit_text_field"
         android:hint="Доп."/>
 
     <Button
+        android:layout_marginTop="10dp"
+        android:layout_height="40dp"
         android:id="@+id/add_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="add"/>
+        android:background="@drawable/button_shape_selector_reversed"
+        android:elevation="6dp"
+        android:textAllCaps="false"
+        android:text="Добавить"/>
 
 </LinearLayout>

@@ -21,5 +21,10 @@ public class MainActivity extends AppCompatActivity {
             fragment = PassFragment.newInstance();
             manager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
+
+        PermissionChecker permissionChecker = new PermissionChecker(this);
+        if (savedInstanceState == null) {
+            permissionChecker.askStorage();
+        }
     }
 }

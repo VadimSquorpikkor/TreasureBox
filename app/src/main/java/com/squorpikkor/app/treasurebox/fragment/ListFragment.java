@@ -1,6 +1,7 @@
 package com.squorpikkor.app.treasurebox.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -10,11 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +26,9 @@ import com.squorpikkor.app.treasurebox.dialog.InputEntityDialog;
 import com.squorpikkor.app.treasurebox.MainViewModel;
 import com.squorpikkor.app.treasurebox.R;
 import com.squorpikkor.app.treasurebox.adapter.EntitiesAdapter;
+import com.squorpikkor.app.treasurebox.file.FileExport;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
@@ -111,7 +114,15 @@ public class ListFragment extends Fragment {
         });
         mViewModel.getCatList().observe(getViewLifecycleOwner(), this::updateCatList);
 
+        view.findViewById(R.id.exportButton).setOnClickListener(v->export());
+
         return view;
+    }
+
+    private void export() {
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        FileExport.export(mViewModel.getEntitiesList().getValue(), dir);
+        Toast.makeText(requireActivity(), "Экспорт в файл", Toast.LENGTH_SHORT).show();
     }
 
     private void updateCatList(ArrayList<String> list) {

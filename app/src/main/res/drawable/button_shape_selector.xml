@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/my_button_shape_pressed"
-        android:state_pressed="true" />
-    <item android:drawable="@drawable/my_button_shape" />
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/MyButtonPressed"/>
+            <corners android:radius="35dp" />
+            <stroke android:width="0dp" android:color="?attr/MyButtonBorderPressed"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/MyButtonColor" />
+            <corners android:radius="35dp" />
+            <stroke android:width="2dp" android:color="?attr/MyButtonBorder" />
+        </shape>
+    </item>
 </selector>

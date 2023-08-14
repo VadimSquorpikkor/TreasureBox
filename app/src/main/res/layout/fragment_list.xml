@@ -29,13 +29,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:layout_marginStart="8dp"
+            android:id="@+id/exportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_export" />
+
         <Spinner style="@style/dialogLinearSpinner" android:id="@+id/spinner"/>
 
         <ImageView
             android:id="@+id/addNewNoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_note_add_24"/>
+            android:src="@drawable/ic_baseline_note_add_24" />
 
         <EditText
             android:id="@+id/search_line"

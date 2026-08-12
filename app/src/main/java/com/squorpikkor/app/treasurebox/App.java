@@ -4,6 +4,8 @@ package com.squorpikkor.app.treasurebox;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 public class App extends Application {
     private static Application mApplication;
 
@@ -11,6 +13,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        FirebaseApp.initializeApp(this);
     }
 
     public static Context getContext(){
